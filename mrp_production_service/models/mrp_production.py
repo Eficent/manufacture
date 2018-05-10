@@ -30,7 +30,7 @@ class MrpProduction(models.Model):
         name = '%s for %s' % (line.product_id.name,
                               production.name)
         self.env['procurement.group'].sudo().run(
-            line.product_id, line.product_qty,
+            line.product_id, production.product_qty,
             line.product_uom_id,
             production.location_src_id, name,
             name, values)
