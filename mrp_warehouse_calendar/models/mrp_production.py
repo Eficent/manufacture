@@ -15,6 +15,8 @@ class MrpProduction(models.Model):
             date_expected_finished = warehouse.calendar_id.plan_days(
                 +1 * self.product_id.produce_delay + 1, dt_planned)
             self.date_planned_finished = date_expected_finished
+        else:
+            super(MrpProduction, self).onchange_date_planned()
 
     @api.multi
     def copy(self, default=None):
