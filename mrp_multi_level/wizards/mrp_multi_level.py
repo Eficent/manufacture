@@ -172,7 +172,8 @@ class MultiLevelMrp(models.TransientModel):
             bomline.product_id, product.mrp_area_id)
         if not mrp_product:
             raise exceptions.Warning(
-                _("No MRP product found"))
+                _("No MRP product %s found for MRP Area %s"
+                  ) % (bomline.product_id.display_name, product.mrp_area_id.name))
 
         return {
             'mrp_area_id': product.mrp_area_id.id,
