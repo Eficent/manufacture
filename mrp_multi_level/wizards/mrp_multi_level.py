@@ -642,11 +642,11 @@ class MultiLevelMrp(models.TransientModel):
     @api.model
     def _convert_group_date_to_default(self, group_date):
         """Odoo read_group time format include the month as locale’s
-        abbreviated name (%b). Using 'en_GB' as common language for read_group
+        abbreviated name (%b). Using 'en_US' as common language for read_group
         calls and this conversion avoids possible issues with locales."""
         lc = locale.setlocale(locale.LC_TIME)
         try:
-            locale.setlocale(locale.LC_TIME, 'en_GB.UTF-8')
+            locale.setlocale(locale.LC_TIME, 'en_US.UTF-8')
             return datetime.strptime(
                 group_date, ODOO_READ_GROUP_DAY_FORMAT).strftime(
                 DEFAULT_SERVER_DATE_FORMAT)
@@ -657,7 +657,7 @@ class MultiLevelMrp(models.TransientModel):
     def _init_mrp_inventory(self, mrp_product):
         mrp_move_obj = self.env['mrp.move']
         # Read Demand
-        demand_groups = mrp_move_obj.with_context(lang='en_GB').read_group(
+        demand_groups = mrp_move_obj.with_context(lang='en_US').read_group(
             [('mrp_product_id', '=', mrp_product.id),
              ('mrp_type', '=', 'd')],
             ['mrp_date', 'mrp_qty'], ['mrp_date:day'],
@@ -670,7 +670,7 @@ class MultiLevelMrp(models.TransientModel):
             demand_qty_by_date[group_date] = group['mrp_qty']
 
         # Read Supply
-        supply_groups = mrp_move_obj.with_context(lang='en_GB').read_group(
+        supply_groups = mrp_move_obj.with_context(lang='en_US').read_group(
             [('mrp_product_id', '=', mrp_product.id),
              ('mrp_type', '=', 's'),
              ('mrp_action', '=', 'none')],
@@ -687,7 +687,7 @@ class MultiLevelMrp(models.TransientModel):
         # TODO: if we remove cancel take it into account here,
         # TODO: as well as mrp_type ('r').
         exclude_mrp_actions = ['none', 'cancel']
-        action_groups = mrp_move_obj.with_context(lang='en_GB').read_group(
+        action_groups = mrp_move_obj.with_context(lang='en_US').read_group(
             [('mrp_product_id', '=', mrp_product.id),
              ('mrp_qty', '!=', 0.0),
              ('mrp_type', '=', 's'),
