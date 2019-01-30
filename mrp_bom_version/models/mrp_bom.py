@@ -1,4 +1,3 @@
-
 # (c) 2015 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -125,30 +124,12 @@ class MrpBom(models.Model):
             'historical_date': fields.Date.today()
         })
 
-    # def search(self, cr, uid, args, offset=0, limit=None, order=None,
-    #            context=None, count=False):
-    #     """Add search argument for field type if the context says so. This
-    #     should be in old API because context argument is not the last one.
-    #     """
-    #     if context is None:
-    #         context = {}
-    #     search_state = context.get('state', False)
-    #     if search_state:
-    #         args += [('state', '=', search_state)]
-    #     return super(MrpBom, self).search(
-    #         cr, uid, args, offset=offset, limit=limit, order=order,
-    #         context=context, count=count)
-
     @api.model
-    def _bom_find(
-            self, product_tmpl_id=None, product_id=None, properties=None):
-        """ Finds BoM for particular product and product uom.
-        @param product_tmpl_id: Selected product.
-        @param product_uom: Unit of measure of a product.
-        @param properties: List of related properties.
-        @return: False or BoM id.
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        """Add search argument for field type if the context says so. This
+        should be in old API because context argument is not the last one.
         """
-        bom_id = super(MrpBom, self.with_context(state='active'))._bom_find(
-            product_tmpl_id=product_tmpl_id, product_id=product_id,
-            properties=properties)
-        return bom_id
+        search_state = self.env.context.get('state', False)
+        if search_state:
+            args += [('state', '=', search_state)]
+        return super(MrpBom, self).search(args, offset, limit, order, count)
