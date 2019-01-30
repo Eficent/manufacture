@@ -1,20 +1,13 @@
-# -*- coding: utf-8 -*-
+
 # (c) 2015 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp import models, fields, api
-from openerp.tools import config
+from odoo import models, fields, api
+from odoo.tools import config
 
 
 class MrpBom(models.Model):
     _inherit = 'mrp.bom'
-
-    _track = {
-        'state': {
-            'mrp_bom_version.mt_active': lambda self, cr, uid, obj,
-            ctx=None: obj.state == 'active',
-        },
-    }
 
     @api.one
     def _get_old_versions(self):
@@ -60,7 +53,7 @@ class MrpBom(models.Model):
         states={'historical': [('readonly', True)]})
     company_id = fields.Many2one(
         states={'historical': [('readonly', True)]})
-    product_uom = fields.Many2one(
+    product_uom_id = fields.Many2one(
         states={'historical': [('readonly', True)]})
     routing_id = fields.Many2one(
         readonly=True, states={'draft': [('readonly', False)]})
@@ -72,15 +65,9 @@ class MrpBom(models.Model):
         states={'historical': [('readonly', True)]})
     date_stop = fields.Date(
         states={'historical': [('readonly', True)]})
-    property_ids = fields.Many2many(
-        states={'historical': [('readonly', True)]})
     product_rounding = fields.Float(
         states={'historical': [('readonly', True)]})
     product_efficiency = fields.Float(
-        states={'historical': [('readonly', True)]})
-    message_follower_ids = fields.One2many(
-        states={'historical': [('readonly', True)]})
-    message_ids = fields.One2many(
         states={'historical': [('readonly', True)]})
     version = fields.Integer(states={'historical': [('readonly', True)]},
                              copy=False, default=1)
@@ -92,7 +79,7 @@ class MrpBom(models.Model):
 
     @api.multi
     def button_draft(self):
-        active_draft = self.env['mrp.config.settings']._get_parameter(
+        active_draft = self.env['res.config.settings']._get_parameter(
             'active.draft')
         self.write({
             'active': active_draft and active_draft.value or False,
@@ -114,7 +101,7 @@ class MrpBom(models.Model):
         }
 
     def _copy_bom(self):
-        active_draft = self.env['mrp.config.settings']._get_parameter(
+        active_draft = self.env['res.config.settings']._get_parameter(
             'active.draft')
         new_bom = self.copy({
             'version': self.version + 1,
@@ -138,19 +125,19 @@ class MrpBom(models.Model):
             'historical_date': fields.Date.today()
         })
 
-    def search(self, cr, uid, args, offset=0, limit=None, order=None,
-               context=None, count=False):
-        """Add search argument for field type if the context says so. This
-        should be in old API because context argument is not the last one.
-        """
-        if context is None:
-            context = {}
-        search_state = context.get('state', False)
-        if search_state:
-            args += [('state', '=', search_state)]
-        return super(MrpBom, self).search(
-            cr, uid, args, offset=offset, limit=limit, order=order,
-            context=context, count=count)
+    # def search(self, cr, uid, args, offset=0, limit=None, order=None,
+    #            context=None, count=False):
+    #     """Add search argument for field type if the context says so. This
+    #     should be in old API because context argument is not the last one.
+    #     """
+    #     if context is None:
+    #         context = {}
+    #     search_state = context.get('state', False)
+    #     if search_state:
+    #         args += [('state', '=', search_state)]
+    #     return super(MrpBom, self).search(
+    #         cr, uid, args, offset=offset, limit=limit, order=order,
+    #         context=context, count=count)
 
     @api.model
     def _bom_find(
