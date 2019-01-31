@@ -8,15 +8,6 @@ from odoo.tools import config
 class MrpBom(models.Model):
     _inherit = 'mrp.bom'
 
-    @api.one
-    def _get_old_versions(self):
-        parent = self.parent_bom
-        old_version = self.env['mrp.bom']
-        while parent:
-            old_version += parent
-            parent = parent.parent_bom
-        self.old_versions = old_version
-
     def _default_active(self):
         """Needed for preserving normal flow when testing other modules."""
         res = False
@@ -70,11 +61,20 @@ class MrpBom(models.Model):
         states={'historical': [('readonly', True)]})
     version = fields.Integer(states={'historical': [('readonly', True)]},
                              copy=False, default=1)
-    parent_bom = fields.Many2one(
-        comodel_name='mrp.bom', string='Parent BoM')
-    old_versions = fields.Many2many(
-        comodel_name='mrp.bom', string='Old Versions',
-        compute='_get_old_versions')
+    history_head = fields.Many2one(
+        'mrp.bom.history',
+        'HEAD',
+        compute='_compute_history_head',
+        store=True,
+        auto_join=True,
+    )
+    history_ids = fields.One2many(
+        'mrp.bom.history',
+        'bom_id',
+        'History',
+        order='create_date DESC',
+        readonly=True,
+    )
 
     @api.multi
     def button_draft(self):
@@ -99,16 +99,6 @@ class MrpBom(models.Model):
             'target': 'current',
         }
 
-    def _copy_bom(self):
-        active_draft = self.env['res.config.settings']._get_parameter(
-            'active.draft')
-        new_bom = self.copy({
-            'version': self.version + 1,
-            'active': active_draft and active_draft.value or False,
-            'parent_bom': self.id,
-        })
-        return new_bom
-
     @api.multi
     def button_activate(self):
         self.write({
@@ -116,13 +106,6 @@ class MrpBom(models.Model):
             'state': 'active'
         })
 
-    @api.multi
-    def button_historical(self):
-        self.write({
-            'active': False,
-            'state': 'historical',
-            'historical_date': fields.Date.today()
-        })
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
