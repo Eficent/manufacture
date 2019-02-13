@@ -2,94 +2,52 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 from odoo import models, fields, api
-from odoo.tools import config
 
 
 class MrpBom(models.Model):
     _inherit = 'mrp.bom'
 
-    def _default_active(self):
-        """Needed for preserving normal flow when testing other modules."""
-        res = False
-        if config['test_enable']:
-            res = not bool(self.env.context.get('test_mrp_bom_version'))
-        return res
+    @api.one
+    def _get_old_versions(self):
+        parent = self.parent_bom
+        old_version = self.env['mrp.bom']
+        while parent:
+            old_version += parent
+            parent = parent.parent_bom
+        self.old_versions = old_version
 
-    def _default_state(self):
-        """Needed for preserving normal flow when testing other modules."""
-        res = 'draft'
-        if (config['test_enable'] and
-                not self.env.context.get('test_mrp_bom_version')):
-            res = 'active'
-        return res
+    def compute_valid(self):
+        dt = fields.Datetime.now()
+        for rec in self:
+            if rec.date_start and rec.date_stop and \
+                    (dt < rec.date_stop and dt > rec.date_start):
+                rec.valid = True
+            else:
+                rec.valid = False
 
-    active = fields.Boolean(
-        default=_default_active,
-        readonly=True, states={'draft': [('readonly', False)]})
-    historical_date = fields.Date(string='Historical Date', readonly=True)
-    state = fields.Selection(
-        selection=[('draft', 'Draft'), ('active', 'Active'),
-                   ('historical', 'Historical')], string='State',
-        index=True, readonly=True, default=_default_state, copy=False)
-    product_tmpl_id = fields.Many2one(
-        readonly=True, states={'draft': [('readonly', False)]})
-    product_id = fields.Many2one(
-        readonly=True, states={'draft': [('readonly', False)]})
-    product_qty = fields.Float(
-        readonly=True, states={'draft': [('readonly', False)]})
-    code = fields.Char(
-        states={'historical': [('readonly', True)]})
-    type = fields.Selection(
-        states={'historical': [('readonly', True)]})
-    company_id = fields.Many2one(
-        states={'historical': [('readonly', True)]})
-    product_uom_id = fields.Many2one(
-        states={'historical': [('readonly', True)]})
-    routing_id = fields.Many2one(
-        readonly=True, states={'draft': [('readonly', False)]})
-    bom_line_ids = fields.One2many(
-        readonly=True, states={'draft': [('readonly', False)]})
-    position = fields.Char(
-        states={'historical': [('readonly', True)]})
-    date_start = fields.Date(
-        states={'historical': [('readonly', True)]})
-    date_stop = fields.Date(
-        states={'historical': [('readonly', True)]})
-    product_rounding = fields.Float(
-        states={'historical': [('readonly', True)]})
-    product_efficiency = fields.Float(
-        states={'historical': [('readonly', True)]})
-    version = fields.Integer(states={'historical': [('readonly', True)]},
-                             copy=False, default=1)
-    history_head = fields.Many2one(
-        'mrp.bom.history',
-        'HEAD',
-        compute='_compute_history_head',
-        store=True,
-        auto_join=True,
-    )
-    history_ids = fields.One2many(
-        'mrp.bom.history',
-        'bom_id',
-        'History',
-        order='create_date DESC',
-        readonly=True,
-    )
+    valid = fields.Boolean(compute='compute_valid')
+    bom_type = fields.Selection(
+        selection=[('primary', 'Primary'), ('alternate', 'Alternate')],
+        string='BOM Type', help='A normal BOM is primary, and alternate is'
+                                ' a prototype',
+        index=True, default='primary')
+    date_start = fields.Date(string='Start Date',
+                             help="BOM valid from this date")
+    date_stop = fields.Date(string='End Date',
+                            help="BOM valid until this date")
+    version = fields.Integer('BOM version', default=1)
+    parent_bom = fields.Many2one(
+        comodel_name='mrp.bom', string='Parent BoM')
+    old_versions = fields.Many2many(
+        comodel_name='mrp.bom', string='Old Versions',
+        compute='_get_old_versions')
 
     @api.multi
-    def button_draft(self):
-        active_draft = self.env['res.config.settings']._get_parameter(
-            'active.draft')
-        self.write({
-            'active': active_draft and active_draft.value or False,
-            'state': 'draft',
-        })
-
-    @api.multi
-    def button_new_version(self):
+    def copy(self):
         self.ensure_one()
-        new_bom = self._copy_bom()
-        self.button_historical()
+        new_bom = self.copy()
+        self.date_stop = fields.Datetime.now()
+        new_bom.date_start = fields.Datetime.now()
         return {
             'type': 'ir.actions.act_window',
             'view_type': 'form, tree',
@@ -99,20 +57,21 @@ class MrpBom(models.Model):
             'target': 'current',
         }
 
-    @api.multi
-    def button_activate(self):
-        self.write({
-            'active': True,
-            'state': 'active'
-        })
-
-
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
-        """Add search argument for field type if the context says so. This
-        should be in old API because context argument is not the last one.
-        """
-        search_state = self.env.context.get('state', False)
-        if search_state:
-            args += [('state', '=', search_state)]
-        return super(MrpBom, self).search(args, offset, limit, order, count)
+    def create(self, vals):
+        if vals['product_tmpl_id']:
+            boms = self.search(
+                [('product_tmpl_id', '=', vals['product_tmpl_id'])],
+                order='version desc', limit=1)
+            if boms:
+                vals['version'] = boms.version+1
+        return super(MrpBom, self).create(vals)
+
+    @api.onchange('product_tmpl_id')
+    def onchange_product_tmpl_id(self):
+        if self.product_tmpl_id:
+            boms = self.search(
+                [('product_tmpl_id', '=', self.product_tmpl_id.id)],
+                order='version desc', limit=1)
+            if boms:
+                self.version = boms.version + 1

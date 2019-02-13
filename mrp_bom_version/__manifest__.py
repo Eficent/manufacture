@@ -25,9 +25,7 @@
     "data": [
         "data/mrp_bom_data.xml",
         "security/mrp_bom_version_security.xml",
-        "views/res_config_view.xml",
         "views/mrp_bom_view.xml",
     ],
     "installable": True,
-    "post_init_hook": "set_active_bom_active_state",
 }
