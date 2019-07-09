@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_repair_labor,access_mrp_repair_labor,model_mrp_repair_labor,base.group_user,1,0,0,0
+access_mrp_repair_overhead,access_mrp_repair_overhead,model_mrp_repair_overhead,base.group_user,1,0,0,0
+access_mrp_repair_labor,access_mrp_repair_labor,model_mrp_repair_labor,stock.group_stock_user,1,1,1,1
+access_mrp_repair_overhead,access_mrp_repair_overhead,model_mrp_repair_overhead,stock.group_stock_user,1,1,1,1

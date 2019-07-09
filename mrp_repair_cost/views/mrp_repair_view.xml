@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_repair_order_form" model="ir.ui.view">
+        <field name="name">mrp.repair.form</field>
+        <field name="model">mrp.repair</field>
+        <field name="inherit_id" ref="mrp_repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position="after">
+                <page name="labor" string="Labor Costs">
+                    <field name="labor_line_ids">
+                        <tree editable="top">
+                            <field name="name"/>
+                            <field name="cost"/>
+                        </tree>
+                    </field>
+
+                </page>
+                <page name="oh" string="Overhead Costs">
+                    <field name="overhead_line_ids">
+                        <tree editable="top">
+                            <field name="name"/>
+                            <field name="cost"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

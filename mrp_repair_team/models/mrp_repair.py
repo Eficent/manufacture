@@ -1,0 +1,32 @@
+# Copyright 2017-18 Eficent Business and IT Consulting Services S.L.
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+
+from odoo import api, fields, models
+
+
+class MrpRepair(models.Model):
+    _inherit = 'mrp.repair'
+
+    @api.model
+    def default_team_id(self):
+        return self.env.user.mrp_repair_team_id or False
+
+    type_id = fields.Many2one('mrp.repair.type')
+    team_id = fields.Many2one(
+        'mrp.repair.team', default=default_team_id)
+
+    @api.onchange('type_id')
+    def onchange_type_id(self):
+        if not self.type_id:
+            return
+        for line in self.operations:
+            line.location_dest_id = self.type_id.\
+                default_raw_material_prod_location_id
+
+    @api.onchange('team_id')
+    def onchange_team_id(self):
+        if not self.team_id:
+            return
+        for line in self.operations:
+            line.location_id = self.team_id.\
+                default_raw_material_location_id

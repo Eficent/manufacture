@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--        TEAM        -->
+    <record id="mrp_repair_team_dep1" model="mrp.repair.team">
+        <field name="name">Team 1</field>
+        <field name="default_raw_material_location_id"
+               ref="stock.stock_location_stock"/>
+    </record>
+
+    <!--        WITHOUT WARRANTY-->
+    <record id="stock_location_repair" model="stock.location">
+        <field name="name">Raw Material Repair</field>
+        <field name="location_id"
+               ref="stock.stock_location_locations_virtual"/>
+        <field name="usage">production</field>
+        <field name="company_id"></field>
+
+    </record>
+
+    <record id="mrp_repair_type_no_warranty" model="mrp.repair.type">
+        <field name="name">No warranty repair</field>
+        <field name="default_raw_material_prod_location_id"
+               ref="mrp_repair_cost.stock_location_repair"/>
+        <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
+        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_cogr"/>
+        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+    </record>
+
+    <!--        WITH WARRANTY-->
+    <record id="stock_location_repair_warranty" model="stock.location">
+        <field name="name">Raw Material Warranty Repair</field>
+        <field name="location_id"
+               ref="stock.stock_location_locations_virtual"/>
+        <field name="usage">production</field>
+        <field name="company_id"></field>
+    </record>
+
+    <record id="mrp_repair_type_warranty" model="mrp.repair.type">
+        <field name="name">Warranty repair</field>
+        <field name="default_raw_material_prod_location_id"
+               ref="mrp_repair_cost.stock_location_repair_warranty"/>
+        <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
+        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_uwr"/>
+        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+    </record>
+
+    <!--        INTERNAL-->
+    <record id="stock_location_repair_internal" model="stock.location">
+        <field name="name">Raw Material Internal Repair</field>
+        <field name="location_id"
+               ref="stock.stock_location_locations_virtual"/>
+        <field name="usage">production</field>
+        <field name="company_id"></field>
+    </record>
+
+    <record id="mrp_repair_type_internal" model="mrp.repair.type">
+        <field name="name">Internal repair</field>
+        <field name="default_raw_material_prod_location_id"
+               ref="mrp_repair_cost.stock_location_repair_internal"/>
+        <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
+        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_ofs"/>
+        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+    </record>
+
+    <!--        REFURBISH-->
+    <record id="stock_location_repair_refurbish" model="stock.location">
+        <field name="name">Raw Material Refurbish Repair</field>
+        <field name="location_id"
+               ref="stock.stock_location_locations_virtual"/>
+        <field name="usage">production</field>
+        <field name="company_id"></field>
+    </record>
+
+    <record id="mrp_repair_type_refurbish" model="mrp.repair.type">
+        <field name="name">Refurbish repair</field>
+        <field name="default_raw_material_prod_location_id"
+               ref="mrp_repair_cost.stock_location_repair_refurbish"/>
+        <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
+        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_refr"/>
+        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_account_cogr" model="account.account">
+        <field name="name">Cost of Goods Repaired</field>
+        <field name="code">9991</field>
+        <field name="user_type_id" ref="account.data_account_type_current_assets" />
+    </record>
+
+    <record id="demo_account_uwr" model="account.account">
+        <field name="name">Under Warranty Repairs</field>
+        <field name="code">9994</field>
+        <field name="user_type_id" ref="account.data_account_type_current_assets" />
+    </record>
+
+    <record id="demo_account_ofs" model="account.account">
+        <field name="name">Office Supplies Repairs</field>
+        <field name="code">9997</field>
+        <field name="user_type_id" ref="account.data_account_type_current_assets" />
+    </record>
+
+    <record id="demo_account_refr" model="account.account">
+        <field name="name">Refurbished Repairs</field>
+        <field name="code">9998</field>
+        <field name="user_type_id" ref="account.data_account_type_current_assets" />
+    </record>
+
+    <record id="demo_account_labor_all" model="account.account">
+        <field name="name">Labor Allocation</field>
+        <field name="code">4441</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+    </record>
+
+    <record id="demo_account_overhead_all" model="account.account">
+        <field name="name">Overhead Allocation</field>
+        <field name="code">4444</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+    </record>
+
+    <record id="repair_journal" model="account.journal">
+        <field name="name">Repair Cost Journal</field>
+        <field name="code">RP-J</field>
+        <field name="type">general</field>
+        <field name="sequence">20</field>
+    </record>
+
+</odoo>
