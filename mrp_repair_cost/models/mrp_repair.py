@@ -7,8 +7,12 @@ from odoo import api, fields, models
 class MrpRepair(models.Model):
     _inherit = 'mrp.repair'
 
-    labor_line_ids = fields.One2many('mrp.repair.labor', 'repair_id')
-    overhead_line_ids = fields.One2many('mrp.repair.overhead', 'repair_id')
+    labor_line_ids = fields.One2many(
+        'mrp.repair.cost', 'repair_id',
+        domain=[('cost_type', '=', 'labor')])
+    overhead_line_ids = fields.One2many(
+        'mrp.repair.cost', 'repair_id',
+        domain=[('cost_type', '=', 'overhead')])
 
     @api.onchange('type_id')
     def onchange_type_id(self):

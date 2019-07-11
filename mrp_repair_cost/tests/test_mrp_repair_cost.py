@@ -10,8 +10,8 @@ class TestMrpRepairStock(TransactionCase):
         super(TestMrpRepairStock, self).setUp(*args, **kwargs)
         self.repair_obj = self.env['mrp.repair']
         self.repair_line_obj = self.env['mrp.repair.line']
-        self.repair_labor_obj = self.env['mrp.repair.labor']
-        self.repair_oh_obj = self.env['mrp.repair.overhead']
+        self.repair_labor_obj = self.env['mrp.repair.cost']
+        self.repair_oh_obj = self.env['mrp.repair.cost']
         self.product_obj = self.env['product.product']
         self.location_obj = self.env['stock.location']
         self.move_obj = self.env['stock.move']
@@ -22,7 +22,9 @@ class TestMrpRepairStock(TransactionCase):
         self.company = self.env.ref('base.main_company')
         self.stock_location_stock.company_id = self.company.id
         self.stock_location_rma_internal = self.stock_location_stock.copy()
+        self.stock_location_rma_internal.name = 'RMA internal'
         self.stock_location_rma_external = self.stock_location_stock.copy()
+        self.stock_location_rma_external.name = 'RMA External'
         self.stock_location_rma_external.company_id = False
         self.stock_location_rma_external.usage = 'customer'
 
@@ -87,6 +89,24 @@ class TestMrpRepairStock(TransactionCase):
             'name': 'Materials',
             'type': 'product',
         })
+
+        self.refurbish_labor_product_id = self.env.ref(
+            'mrp_repair_cost.refurbish_labor_product_id')
+        self.refurbish_oh_product_id = self.env.ref(
+            'mrp_repair_cost.refurbish_oh_product_id')
+        self.internal_labor_product_id = self.env.ref(
+            'mrp_repair_cost.internal_labor_product_id')
+        self.internal_oh_product_id = self.env.ref(
+            'mrp_repair_cost.internal_oh_product_id')
+        self.warranty_labor_product_id = self.env.ref(
+            'mrp_repair_cost.warranty_labor_product_id')
+        self.warranty_oh_product_id = self.env.ref(
+            'mrp_repair_cost.warranty_oh_product_id')
+        self.no_warranty_labor_product_id = self.env.ref(
+            'mrp_repair_cost.no_warranty_labor_product_id')
+        self.no_warranty_oh_product_id = self.env.ref(
+            'mrp_repair_cost.no_warranty_oh_product_id')
+
         self.material.product_tmpl_id.standard_price = 10
         self.material.categ_id.property_valuation = 'real_time'
         self._update_product_qty(
@@ -172,14 +192,18 @@ class TestMrpRepairStock(TransactionCase):
             'price_unit': 10.0
         })
         self.repair_labor_obj.create({
-            'name': 'Assembly',
+            'cost_type': 'labor',
+            'product_id': self.no_warranty_labor_product_id.id,
+            'product_uom_id': self.no_warranty_labor_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 10.0,
         })
         self.repair_oh_obj.create({
-            'name': 'Overhead',
+            'cost_type': 'overhead',
+            'product_id': self.no_warranty_oh_product_id.id,
+            'product_uom_id': self.no_warranty_oh_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 1.0,
         })
         line.onchange_product_id()
         line.repair_id.onchange_type_id()
@@ -267,14 +291,18 @@ class TestMrpRepairStock(TransactionCase):
             'price_unit': 10.0
         })
         self.repair_labor_obj.create({
-            'name': 'Assembly',
+            'cost_type': 'labor',
+            'product_id': self.warranty_labor_product_id.id,
+            'product_uom_id': self.warranty_labor_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 10.0,
         })
         self.repair_oh_obj.create({
-            'name': 'Overhead',
+            'cost_type': 'overhead',
+            'product_id': self.warranty_oh_product_id.id,
+            'product_uom_id': self.warranty_oh_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 1.0,
         })
         line.onchange_product_id()
         line.repair_id.onchange_type_id()
@@ -361,14 +389,18 @@ class TestMrpRepairStock(TransactionCase):
             'price_unit': 10.0
         })
         self.repair_labor_obj.create({
-            'name': 'Assembly',
+            'cost_type': 'labor',
+            'product_id': self.internal_labor_product_id.id,
+            'product_uom_id': self.internal_labor_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 10.0,
         })
         self.repair_oh_obj.create({
-            'name': 'Overhead',
+            'cost_type': 'overhead',
+            'product_id': self.warranty_oh_product_id.id,
+            'product_uom_id': self.warranty_oh_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 1.0,
         })
         line.onchange_product_id()
         line.repair_id.onchange_type_id()
@@ -461,14 +493,18 @@ class TestMrpRepairStock(TransactionCase):
         })
         repair._onchange_to_refurbish()
         self.repair_labor_obj.create({
-            'name': 'Assembly',
+            'cost_type': 'labor',
+            'product_id': self.refurbish_labor_product_id.id,
+            'product_uom_id': self.refurbish_labor_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 10.0,
         })
         self.repair_oh_obj.create({
-            'name': 'Overhead',
+            'cost_type': 'overhead',
+            'product_id': self.refurbish_oh_product_id.id,
+            'product_uom_id': self.refurbish_oh_product_id.uom_id.id,
+            'product_qty': 1,
             'repair_id': repair.id,
-            'cost': 1.0,
         })
         line.onchange_product_id()
         line.repair_id.onchange_type_id()

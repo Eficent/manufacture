@@ -17,6 +17,7 @@
     "data": [
         "security/ir.model.access.csv",
         "views/mrp_repair_view.xml",
+        "views/product_view.xml",
     ],
     "demo": [
         "data/account_data.xml",

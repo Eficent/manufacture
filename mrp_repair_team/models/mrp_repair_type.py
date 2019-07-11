@@ -10,8 +10,3 @@ class MrpRepairType(models.Model):
     name = fields.Char()
     default_raw_material_prod_location_id = fields.Many2one('stock.location',
                                                             required=True)
-    journal_id = fields.Many2one('account.journal', required=True)
-    debit_account_id = fields.Many2one('account.account', required=True)
-    # credit for inventory determined by the location not here, only one account specified above
-    credit_labor_account_id = fields.Many2one('account.account', required=True)
-    credit_overhead_account_id = fields.Many2one('account.account', required=True)

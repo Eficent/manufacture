@@ -7,6 +7,118 @@
                ref="stock.stock_location_stock"/>
     </record>
 
+    <!--        PRODUCT        -->
+
+    <record id="product_category_cost" model="product.category">
+        <field name="name">Repair Costs</field>
+        <field name="property_valuation">real_time</field>
+        <field name="stock_journal" ref="mrp_repair_cost.repair_journal"/>
+    </record>
+
+    <record id="refurbish_labor_product_id" model="product.product">
+        <field name="name">Refurbish Labor Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">10.0</field>
+        <field name="list_price">10.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">LABOR</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_refr"/>
+    </record>
+
+    <record id="refurbish_oh_product_id" model="product.product">
+        <field name="name">Refurbish Overhead Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">1.0</field>
+        <field name="list_price">1.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">OH</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_refr"/>
+    </record>
+
+    <record id="internal_labor_product_id" model="product.product">
+        <field name="name">Internal Labor Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">10.0</field>
+        <field name="list_price">10.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">LABOR</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_ofs"/>
+    </record>
+
+    <record id="internal_oh_product_id" model="product.product">
+        <field name="name">Internal Overhead Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">1.0</field>
+        <field name="list_price">1.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">OH</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_ofs"/>
+    </record>
+
+    <record id="warranty_labor_product_id" model="product.product">
+        <field name="name">Warranty Labor Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">10.0</field>
+        <field name="list_price">10.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">LABOR</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_uwr"/>
+    </record>
+
+    <record id="warranty_oh_product_id" model="product.product">
+        <field name="name">Warranty Overhead Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">1.0</field>
+        <field name="list_price">1.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">OH</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_uwr"/>
+    </record>
+
+    <record id="no_warranty_labor_product_id" model="product.product">
+        <field name="name">No Warranty Labor Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">10.0</field>
+        <field name="list_price">10.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">LABOR</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_labor_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_cogr"/>
+    </record>
+
+    <record id="no_warranty_oh_product_id" model="product.product">
+        <field name="name">No Warranty Overhead Cost</field>
+        <field name="categ_id" ref="mrp_repair_cost.product_category_cost"/>
+        <field name="standard_price">1.0</field>
+        <field name="list_price">1.0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="product.product_uom_hour"/>
+        <field name="uom_po_id" ref="product.product_uom_hour"/>
+        <field name="default_code">OH</field>
+        <field name="property_cost_allocation_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="property_wip_account_id" ref="mrp_repair_cost.demo_account_cogr"/>
+    </record>
+
     <!--        WITHOUT WARRANTY-->
     <record id="stock_location_repair" model="stock.location">
         <field name="name">Raw Material Repair</field>
@@ -22,9 +134,8 @@
         <field name="default_raw_material_prod_location_id"
                ref="mrp_repair_cost.stock_location_repair"/>
         <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
-        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_cogr"/>
-        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
-        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="default_labor_product_id" ref="mrp_repair_cost.no_warranty_labor_product_id"/>
+        <field name="default_oh_product_id" ref="mrp_repair_cost.no_warranty_oh_product_id"/>
     </record>
 
     <!--        WITH WARRANTY-->
@@ -41,9 +152,8 @@
         <field name="default_raw_material_prod_location_id"
                ref="mrp_repair_cost.stock_location_repair_warranty"/>
         <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
-        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_uwr"/>
-        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
-        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="default_labor_product_id" ref="mrp_repair_cost.warranty_labor_product_id"/>
+        <field name="default_oh_product_id" ref="mrp_repair_cost.warranty_oh_product_id"/>
     </record>
 
     <!--        INTERNAL-->
@@ -60,9 +170,8 @@
         <field name="default_raw_material_prod_location_id"
                ref="mrp_repair_cost.stock_location_repair_internal"/>
         <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
-        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_ofs"/>
-        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
-        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="default_labor_product_id" ref="mrp_repair_cost.internal_labor_product_id"/>
+        <field name="default_oh_product_id" ref="mrp_repair_cost.internal_oh_product_id"/>
     </record>
 
     <!--        REFURBISH-->
@@ -79,9 +188,8 @@
         <field name="default_raw_material_prod_location_id"
                ref="mrp_repair_cost.stock_location_repair_refurbish"/>
         <field name="journal_id" ref="mrp_repair_cost.repair_journal"/>
-        <field name="debit_account_id" ref="mrp_repair_cost.demo_account_refr"/>
-        <field name="credit_labor_account_id" ref="mrp_repair_cost.demo_account_labor_all"/>
-        <field name="credit_overhead_account_id" ref="mrp_repair_cost.demo_account_overhead_all"/>
+        <field name="default_labor_product_id" ref="mrp_repair_cost.refurbish_labor_product_id"/>
+        <field name="default_oh_product_id" ref="mrp_repair_cost.refurbish_oh_product_id"/>
     </record>
 
 </odoo>
