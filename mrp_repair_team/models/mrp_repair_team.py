@@ -8,5 +8,10 @@ class MrpRepairTeam(models.Model):
     _name = 'mrp.repair.team'
 
     name = fields.Char()
-    default_raw_material_location_id = fields.Many2one('stock.location',
-                                                       required=True)
+    default_raw_material_location_id = fields.Many2one(
+        'stock.location',
+        string="Raw material source location",
+        required=True)
+    user_ids = fields.Many2many(
+        'res.users',
+        string='Users')

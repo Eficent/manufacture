@@ -35,6 +35,7 @@ class ProductTemplate(models.Model):
             or self.categ_id.property_cost_allocation_id or False,
             'wip_account': (self.property_wip_account_id or
                             self.categ_id.property_wip_account_id or False),
+            'stock_journal': self.categ_id.property_stock_journal_id or False,
         })
         return accounts
 
@@ -45,7 +46,8 @@ class ProductTemplate(models.Model):
             'cost_all_account'].id
         acc_overhead = accounts_data['wip_account'] and accounts_data[
             'wip_account'].id
-
+        stock_journal = accounts_data['stock_journal'] and accounts_data[
+            'stock_journal'].id
         if cost_type == 'labor' and not acc_labor:
             raise UserError(_(
                 'Cannot find a labor account for the product %s. You '

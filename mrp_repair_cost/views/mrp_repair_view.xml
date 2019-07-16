@@ -8,10 +8,12 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[1]" position="after">
                 <page name="labor" string="Labor Costs">
-                    <field name="labor_line_ids">
+                    <field name="labor_line_ids" context="{
+                                'default_cost_type': 'labor'}">
                         <tree editable="top">
-                            <field name="name"/>
+                            <field name="cost_type" invisible="1"/>
                             <field name="product_id"/>
+                            <field name="name" />
                             <field name="product_qty"/>
                             <field name="product_uom_id"/>
                         </tree>
@@ -19,10 +21,12 @@
 
                 </page>
                 <page name="oh" string="Overhead Costs">
-                    <field name="overhead_line_ids">
+                    <field name="overhead_line_ids" context="{
+                                'default_cost_type': 'overhead'}">
                         <tree editable="top">
-                            <field name="name"/>
+                            <field name="cost_type" invisible="1"/>
                             <field name="product_id"/>
+                            <field name="name"/>
                             <field name="product_qty"/>
                             <field name="product_uom_id"/>
                         </tree>

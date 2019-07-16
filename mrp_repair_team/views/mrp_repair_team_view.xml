@@ -22,6 +22,11 @@
                          <field name="default_raw_material_location_id"/>
                      </group>
                  </group>
+                <notebook>
+                    <page name="users" string="Users">
+                        <field name="user_ids"/>
+                    </page>
+                </notebook>
             </form>
         </field>
      </record>

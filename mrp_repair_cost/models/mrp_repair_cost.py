@@ -12,23 +12,32 @@ UNIT = dp.get_precision('Product Price')
 class MrpRepairCost(models.Model):
     _name = "mrp.repair.cost"
 
+    @api.model
     def default_product(self):
         if self.cost_type == 'labor':
             return self.type_id.default_labor_product_id
         else:
             return self.type_id.default_oh_product_id
 
+    @api.model
+    def default_cost_type(self):
+        if self.env.context.get('default_cost_type', False):
+            if self.env.context.get('default_cost_type') == 'labor':
+                return 'labor'
+            else:
+                return 'overhead'
+
     name = fields.Char(related='product_id.name')
     cost_type = fields.Selection(
         string="Type",
         selection=[('labor', 'Labor'), ('overhead', 'Overhead')],
+        deafult='default_cost_type',
         required=True,
     )
     product_id = fields.Many2one(
         comodel_name='product.product',
         string='Product',
         required=True,
-        default='default_product_id',
         domain=[('type', '=', 'service')],
     )
     product_qty = fields.Float(

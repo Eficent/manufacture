@@ -18,7 +18,7 @@
         "security/repair_team_security.xml",
         "views/mrp_repair_view.xml",
         "views/mrp_repair_team_view.xml",
-        "views/mrp_repair_type_view.xml"
-
+        "views/mrp_repair_type_view.xml",
+        'views/res_users_view.xml',
     ],
 }
