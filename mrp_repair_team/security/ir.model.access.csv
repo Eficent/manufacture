@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_repair_team,access_mrp_repair_team,model_mrp_repair_team,base.group_user,1,0,0,0
+access_mrp_repair_type,access_mrp_repair_type,model_mrp_repair_type,base.group_user,1,0,0,0
+access_mrp_repair_team,access_mrp_repair_team,model_mrp_repair_team,stock.group_stock_user,1,1,1,1
+access_mrp_repair_type,access_mrp_repair_type,model_mrp_repair_type,stock.group_stock_user,1,1,1,1
