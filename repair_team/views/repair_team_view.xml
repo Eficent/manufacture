@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="repair_team_view_tree" model="ir.ui.view">
+        <field name="name">repair.team.tree</field>
+        <field name="model">repair.team</field>
+        <field name="arch" type="xml">
+            <tree string="Repair Teams">
+                <field name="name"/>
+                <field name="default_raw_material_location_id"/>
+                <field name="default_repair_src_location_id"/>
+                <field name="default_repair_dest_location_id"/>
+            </tree>
+        </field>
+    </record>
+
+     <record id="repair_team_view_form" model="ir.ui.view">
+        <field name="name">repair.team.form</field>
+        <field name="model">repair.team</field>
+        <field name="arch" type="xml">
+            <form string="Repair Team">
+                 <group name="main">
+                     <group name="main_1">
+                         <field name="name"/>
+                         <field name="default_raw_material_location_id"/>
+                         <field name="default_repair_src_location_id"/>
+                         <field name="default_repair_dest_location_id"/>
+                     </group>
+                 </group>
+                <notebook>
+                    <page name="users" string="Users">
+                        <field name="user_ids"/>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+     </record>
+
+    <record id="repair_team_view_search" model="ir.ui.view">
+        <field name="name">repair.team.search</field>
+        <field name="model">repair.team</field>
+        <field name="arch" type="xml">
+            <search string="Repair Teams">
+                <field name="name"/>
+                <field name="default_raw_material_location_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="repair_team_action">
+        <field name="name">Repair Team</field>
+        <field name="res_model">repair.team</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="repair_team_view_tree"/>
+    </record>
+
+    <menuitem name="Repair Teams"
+              id="menu_repair_team"
+              action="repair_team_action"
+              parent="mrp.menu_mrp_configuration"
+              sequence="50"/>
+
+</odoo>

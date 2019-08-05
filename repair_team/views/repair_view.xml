@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_repair_order_tree" model="ir.ui.view">
+        <field name="name">repair.order.tree</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="team_id"/>
+                <field name="type_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_repair_order_form" model="ir.ui.view">
+        <field name="name">repair.order.form</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[1]" position="inside">
+                <group>
+                    <field name="team_id"/>
+                    <field name="type_id"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook/page[1]/field[@name='operations']" position="attributes">
+                <attribute name="context">{
+                        'default_product_uom_qty': product_qty,
+                        'team_id': team_id,
+                        'type_id': type_id,
+                    }</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_repair_order_form_filter" model="ir.ui.view">
+          <field name="name">repair.order.select</field>
+          <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form_filter"/>
+          <field name="arch" type="xml">
+              <field name="product_id" position="after">
+                  <field name="team_id"/>
+                  <field name="type_id"/>
+              </field>
+          </field>
+    </record>
+
+</odoo>
