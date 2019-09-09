@@ -9,6 +9,11 @@
                ref="stock.stock_location_stock"/>
         <field name="default_repair_dest_location_id"
                ref="stock.stock_location_stock"/>
+        <field name="labor_allocation_account_id" ref="repair_account.demo_account_labor_all"/>
+        <field name="overhead_allocation_account_id" ref="repair_account.demo_account_overhead_all"/>
+        <field name="labor_standard_cost" eval="10.0"/>
+        <field name="overhead_standard_cost" eval="10.0"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 
     <!--    LOCATIONS AND TYPES-->
@@ -29,6 +34,7 @@
         <field name="default_raw_material_prod_location_id"
                ref="repair_account.stock_location_repair"/>
         <field name="journal_id" ref="repair_account.repair_journal"/>
+        <field name="invoice_method">after_repair</field>
         <field name="wip_account_id" ref="repair_account.demo_account_cogr"/>
     </record>
 
@@ -78,7 +84,6 @@
                ref="stock.stock_location_locations_virtual"/>
         <field name="usage">production</field>
         <field name="company_id"></field>
-        <field name="valuation_in_account_id" ref="repair_account.demo_account_refr"/>
         <field name="valuation_out_account_id" ref="repair_account.demo_account_refr"/>
     </record>
 
@@ -87,7 +92,7 @@
         <field name="default_raw_material_prod_location_id"
                ref="repair_account.stock_location_repair_refurbish"/>
         <field name="journal_id" ref="repair_account.repair_journal"/>
-        <field name="refurbish_location_id" ref="stock.stock_location_customers"/>
+        <field name="refurbish_location_id" ref="repair_account.stock_location_repair_refurbish"/>
         <field name="wip_account_id" ref="repair_account.demo_account_refr"/>
         <field name="to_refurbish" eval="True"/>
     </record>
