@@ -16,3 +16,10 @@ class ResUsers(models.Model):
         comodel_name='repair.team',
         relation='mrp_repair_team_user_rel',
         column1='user_id', column2='team_id')
+
+    @api.multi
+    def write(self, values):
+        if values.get('repair_team_id', False):
+            team_id = values.get('repair_team_id')
+            values['repair_team_ids'] = [(4, team_id)]
+        return super(ResUsers, self).write(values)
