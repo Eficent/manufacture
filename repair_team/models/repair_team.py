@@ -6,6 +6,7 @@ from odoo import api, fields, models
 
 class MrpRepairTeam(models.Model):
     _name = 'repair.team'
+    _description = 'Repair Team'
 
     name = fields.Char()
     default_raw_material_location_id = fields.Many2one(
