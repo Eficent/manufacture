@@ -24,3 +24,4 @@ class RepairTeam(models.Model):
         company_dependent=True,
         domain=[('deprecated', '=', False)],
         help="The expenses allocation for labor in repair orders")
+    journal_id = fields.Many2one('account.journal', required=True)

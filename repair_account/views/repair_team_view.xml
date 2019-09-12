@@ -12,6 +12,7 @@
                      <field name="overhead_allocation_account_id"/>
                      <field name="labor_standard_cost"/>
                      <field name="overhead_standard_cost"/>
+                     <field name="journal_id"/>
                  </group>
              </xpath>
          </field>
