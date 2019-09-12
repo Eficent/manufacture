@@ -7,7 +7,6 @@ from odoo import api, fields, models
 class RepairType(models.Model):
     _inherit = 'repair.type'
 
-    journal_id = fields.Many2one('account.journal', required=True)
     wip_account_id = fields.Many2one(
         'account.account', 'Repair Work in progress account',
         company_dependent=True,

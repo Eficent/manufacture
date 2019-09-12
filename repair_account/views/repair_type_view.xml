@@ -6,7 +6,6 @@
         <field name="inherit_id" ref="repair_team.repair_type_view_tree"/>
         <field name="arch" type="xml">
             <field name="invoice_method" position="after">
-                <field name="journal_id"/>
                 <field name="refurbish_location_id"/>
                 <field name="wip_account_id"/>
             </field>
@@ -21,7 +20,6 @@
             <xpath expr="//group[@name='main']" position="after">
                 <group name="second" string="Account Settings">
                     <group name="accounting">
-                        <field name="journal_id"/>
                         <field name="refurbish_location_id"/>
                         <field name="wip_account_id"/>
                     </group>

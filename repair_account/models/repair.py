@@ -38,7 +38,7 @@ class RepairOrder(models.Model):
                 date = self._context.get('force_period_date',
                                          fields.Date.context_today(self))
                 new_account_move = self.env['account.move'].sudo().create({
-                    'journal_id': self.type_id.journal_id.id,
+                    'journal_id': self.team_id.journal_id.id,
                     'line_ids': move_lines,
                     'date': date,
                     'ref': self.name
@@ -102,7 +102,7 @@ class RepairOrder(models.Model):
         else:
             raise ValidationError('Undefined cost type')
         wip_account = self.type_id.wip_account_id
-        stock_journal = self.type_id.wip_account_id
+        stock_journal = self.team_id.journal_id
         return all_account, wip_account, stock_journal
 
     def get_cost_amount(self, cost_type):
