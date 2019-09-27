@@ -99,6 +99,8 @@ class RepairOrder(models.Model):
         else:
             raise ValidationError('Undefined cost type')
         wip_account = self.type_id.wip_account_id
+        if not wip_account:
+            raise ValidationError('Repair type incorrect')
         stock_journal = self.team_id.journal_id
         return all_account, wip_account, stock_journal
 
