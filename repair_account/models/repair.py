@@ -40,7 +40,7 @@ class RepairOrder(models.Model):
                     'date': date,
                     'ref': self.name
                 })
-                new_account_move.post()
+                new_account_move.sudo().post()
 
     @api.multi
     def action_repair_end(self):
