@@ -8,9 +8,6 @@ from odoo.exceptions import ValidationError
 class RepairOrder(models.Model):
     _inherit = 'repair.order'
 
-    timesheet_ids = fields.One2many('account.analytic.line', 'repair_id',
-                                    string="Analytic Lines")
-
     @api.onchange('type_id')
     def onchange_type_id(self):
         super(RepairOrder, self).onchange_type_id()

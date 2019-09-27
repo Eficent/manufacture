@@ -6,20 +6,6 @@
         <field name="model">repair.order</field>
         <field name="inherit_id" ref="repair.view_repair_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook/page[1]" position="after">
-                <page name="time" string="Report Time">
-                    <field name="timesheet_ids" context="{'default_user_id': uid, 'tree_view_ref': 'hr_timesheet.timesheet_view_tree_user'}">
-                        <tree editable="bottom" string="Timesheet Activities" default_order="date">
-                            <field name="date"/>
-                            <field name="user_id" invisible="1"/>
-                            <field name="account_id"/>
-                            <field name="name"/>
-                            <field name="unit_amount" string="Duration" widget="float_time"/>
-                            <field name="repair_id" invisible="1"/>
-                        </tree>
-                    </field>
-                </page>
-            </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button name="action_view_account_moves" type="object" string="Account Moves"
                         class="oe_stat_button" icon="fa-list" groups="account.group_account_user"
